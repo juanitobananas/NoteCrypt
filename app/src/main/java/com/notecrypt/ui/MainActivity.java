@@ -383,6 +383,7 @@ public class MainActivity extends AppCompatActivity implements AsyncDelegate {
                         .locations(data.getLongExtra("location", -1), data.getIntExtra("listViewLocation", -1))
                         .filter(filterSelected)
                         .build().execute();
+                Toast.makeText(this, R.string.note_saved, Toast.LENGTH_SHORT).show();
             }
         }
     }
