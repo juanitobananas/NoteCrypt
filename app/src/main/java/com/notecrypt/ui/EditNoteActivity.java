@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -143,18 +144,22 @@ public class EditNoteActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setMessage(R.string.dialog_backNoSave)
-                .setCancelable(false)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        final Intent intent = getIntent();
-                        setResult(RESULT_CANCELED, intent);
-                        finish();
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, null)
-                .show();
+        if (isAutoSave()) {
+            super.onBackPressed(); // If auto-save is on, we don't need to ask the user if she really wants to leave the EditNoteActivity
+        } else {
+            new AlertDialog.Builder(this)
+                    .setMessage(R.string.dialog_backNoSave)
+                    .setCancelable(false)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, final int id) {
+                            final Intent intent = getIntent();
+                            setResult(RESULT_CANCELED, intent);
+                            finish();
+                        }
+                    })
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show();
+        }
     }
 
     /**
@@ -178,12 +183,19 @@ public class EditNoteActivity extends AppCompatActivity {
         App.setIsInForeground(true);
     }
 
+    public boolean isAutoSave() {
+        return PreferenceManager.getDefaultSharedPreferences(this).getBoolean("pref_autoSave", false);
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
         App.setIsInForeground(false);
         isEditNoteActivityForeground = false;
         mHandler.postDelayed(r, MainActivity.TIMEOUT_SPLITTED);
+        if (isAutoSave()) {
+            saveNote();
+        }
     }
 
     @Override

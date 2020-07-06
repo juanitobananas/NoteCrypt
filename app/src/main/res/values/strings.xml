@@ -80,6 +80,8 @@
         <item >25</item>
     </string-array>
     <string name="pref_textSize_default">20</string>
+    <string name="pref_autoSave">Auto-save notes</string>
+    <string name="pref_autoSave_summ">Automatically save notes while switching to another app.</string>
     <string name="action_search">Search</string>
     <string name="action_starred">Important</string>
     <string name="action_remove">Remove</string>

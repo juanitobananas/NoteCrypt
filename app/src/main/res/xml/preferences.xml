@@ -15,4 +15,10 @@
         android:key="pref_textSize"
         android:title="@string/pref_textSize" />
 
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="pref_autoSave"
+        android:summary="@string/pref_autoSave_summ"
+        android:title="@string/pref_autoSave" />
+
 </PreferenceScreen>
